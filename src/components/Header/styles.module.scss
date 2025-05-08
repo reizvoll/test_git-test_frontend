@@ -1,0 +1,43 @@
+@import "/src/styles/utils.module";
+
+.header {
+    @extend .flexRow;
+    @extend .justifyContentSpaceBetween;
+    @extend .alignItemsCenter;
+    @extend .padding;
+    @extend .bgWhite;
+    @extend .card;
+}
+
+.logo {
+    h1 {
+        @extend .heading2;
+    }
+}
+
+.auth {
+    @extend .flexRow;
+    @extend .alignItemsCenter;
+}
+
+.profile {
+    @extend .flexRow;
+    @extend .alignItemsCenter;
+    gap: 1rem;
+}
+
+.avatar {
+    border-radius: 50%;
+}
+
+.username {
+    @extend .text;
+}
+
+.loginButton {
+    @extend .primaryButton;
+}
+
+.logoutButton {
+    @extend .secondaryButton;
+} 
