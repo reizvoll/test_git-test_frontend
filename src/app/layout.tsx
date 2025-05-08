@@ -1,4 +1,5 @@
-import "@/styles/globals.css";
+import TQProvider from "@/lib/providers/TQProvider";
+import "@/styles/globals.scss";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
@@ -15,13 +16,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={pretendard.className}>{children}</body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={pretendard.className}>
+                <TQProvider>{children}</TQProvider>
+            </body>
+        </html>
+    );
 }
