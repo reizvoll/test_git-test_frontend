@@ -10,7 +10,7 @@ import styles from './styles.module.scss';
 
 export const HomePage = () => {
     const { user, isPending } = useAuthStore();
-    const { fetchActivities, isLoading, activities } = useActivities();
+    const { fetchActivities, syncActivities, isLoading, activities } = useActivities();
 
     useEffect(() => {
         if (user) {
@@ -34,11 +34,11 @@ export const HomePage = () => {
                 ) : user && (
                     <div className={styles.actions}>
                         <SyncButton
-                            onClick={() => fetchActivities()}
+                            onClick={syncActivities}
                             isSyncing={isLoading}
                             lastSyncTime={activities?.[0]?.createdAt ? new Date(activities[0].createdAt) : undefined}
                         />
-                        <ActivityTable />
+                        <ActivityTable activities={activities} />
                     </div>
                 )}
 

@@ -1,3 +1,16 @@
+export const formatDate = (date: Date | string) => {
+    const d = new Date(date);
+    return d.toLocaleString('en-US', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+        timeZone: 'Asia/Seoul'
+    });
+};
+
 export const ACTIVITY_COL_SETTINGS = {
   schema: {
     type: null,

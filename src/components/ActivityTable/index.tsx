@@ -1,7 +1,7 @@
 'use client';
 
-import { useActivities } from '@/lib/hooks/useActivities';
-import { ACTIVITY_COL_SETTINGS } from '@/lib/types/activity';
+import { ACTIVITY_COL_SETTINGS, formatDate } from '@/lib/types/activity';
+import { GitHubActivity } from '@/lib/types/api';
 import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.min.css';
 import { registerAllModules } from 'handsontable/registry';
@@ -11,8 +11,11 @@ import styles from './styles.module.scss';
 // register Handsontable's modules
 registerAllModules();
 
-export const ActivityTable = () => {
-    const { activities } = useActivities();
+interface ActivityTableProps {
+    activities: GitHubActivity[];
+}
+
+export const ActivityTable = ({ activities }: ActivityTableProps) => {
     const hotRef = useRef<any>(null);
     const [currentSortOrder, setCurrentSortOrder] = useState<'asc' | 'desc' | null>(null);
     const [currentSortColumn, setCurrentSortColumn] = useState<number | null>(null);
@@ -20,7 +23,7 @@ export const ActivityTable = () => {
     const data = activities?.map(activity => ({
         type: activity.type,
         repository: activity.repository,
-        createdAt: new Date(activity.createdAt).toLocaleString(),
+        createdAt: formatDate(activity.createdAt),
         title: activity.title,
     })) || [];
 
