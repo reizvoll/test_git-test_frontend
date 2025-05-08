@@ -6,11 +6,17 @@ import { useEffect } from 'react';
 import styles from './styles.module.scss';
 
 export const Header = () => {
-    const { user, login, logout, checkAuth } = useAuthStore();
+    const { user, login, logout, checkAuth, isPending } = useAuthStore();
 
     useEffect(() => {
-        checkAuth();
-    }, [checkAuth]);
+        const initAuth = async () => {
+            await checkAuth();
+        };
+        initAuth();
+    }, [checkAuth]); // checkAuth를 의존성 배열에 추가
+
+    useEffect(() => {
+    }, [user]);
 
     return (
         <header className={styles.header}>
@@ -18,18 +24,22 @@ export const Header = () => {
                 <h1>GitHub Activity Tracker</h1>
             </div>
             <div className={styles.auth}>
-                {user ? (
+                {isPending ? (
+                    <div>Loading...</div>
+                ) : user ? (
                     <div className={styles.profile}>
                         {user.image && (
                             <Image
                                 src={user.image}
-                                alt={user.name || 'Profile'}
+                                alt={user.username || 'Profile'}
                                 width={32}
                                 height={32}
                                 className={styles.avatar}
+                                unoptimized={false}
+                                priority
                             />
                         )}
-                        <span className={styles.username}>{user.name}</span>
+                        <span className={styles.username}>{user.username}</span>
                         <button onClick={logout} className={styles.logoutButton}>
                             Logout
                         </button>

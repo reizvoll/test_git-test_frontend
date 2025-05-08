@@ -24,10 +24,17 @@
     @extend .flexRow;
     @extend .alignItemsCenter;
     gap: 1rem;
+
+    .logoutButton {
+        margin-left: 1rem;
+    }
 }
 
 .avatar {
     border-radius: 50%;
+    border: 1px solid #e1e4e8;
+    object-fit: cover;
+    overflow: hidden;
 }
 
 .username {
