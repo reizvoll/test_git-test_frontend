@@ -5,11 +5,18 @@ import { Header } from '@/components/Header';
 import { SyncButton } from '@/components/SyncButton';
 import { useActivities } from '@/lib/hooks/useActivities';
 import { useAuthStore } from '@/lib/store/authStore';
+import { useEffect } from 'react';
 import styles from './styles.module.scss';
 
 export const HomePage = () => {
-    const { user } = useAuthStore();
+    const { user, isPending } = useAuthStore();
     const { fetchActivities, isLoading, activities } = useActivities();
+
+    useEffect(() => {
+        if (user) {
+            fetchActivities();
+        }
+    }, [user, fetchActivities]);
 
     return (
         <div className={styles.container}>
@@ -22,7 +29,9 @@ export const HomePage = () => {
                     </p>
                 </section>
 
-                {user && (
+                {isPending ? (
+                    <div>Loading...</div>
+                ) : user && (
                     <div className={styles.actions}>
                         <SyncButton
                             onClick={() => fetchActivities()}
