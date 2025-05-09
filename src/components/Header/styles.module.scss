@@ -9,9 +9,30 @@
     @extend .card;
 }
 
+.container {
+    @extend .flexRow;
+    @extend .justifyContentSpaceBetween;
+    @extend .alignItemsCenter;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 2rem;
+
+    @media (max-width: 480px) {
+        padding: 0 1rem;
+    }
+}
+
 .logo {
     h1 {
         @extend .heading2;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a1a;
+
+        @media (max-width: 480px) {
+            margin-right: 1rem;
+            font-size: 1rem;
+        }
     }
 }
 
@@ -28,6 +49,13 @@
     .logoutButton {
         margin-left: 1rem;
     }
+
+    @media (max-width: 480px) {
+        gap: 0.5rem;
+        .logoutButton {
+            margin-left: 0;
+        }
+    }
 }
 
 .avatar {
@@ -39,6 +67,10 @@
 
 .username {
     @extend .text;
+
+    @media (max-width: 480px) {
+        display: none;
+    }
 }
 
 .loginButton {
