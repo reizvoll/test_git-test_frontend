@@ -1,0 +1,69 @@
+.toast {
+    position: fixed;
+    bottom: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 52px;
+    min-width: 400px;
+    padding: 0 24px;
+    color: white;
+    animation: fadeIn 0.3s ease-out;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+        min-height: 48px;
+        min-width: 330px;
+        padding: 0 20px;
+    }
+}
+
+.clickBox {
+    position: absolute;
+    z-index: -10;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 9999px;
+}
+
+.message {
+    padding: 12px 0;
+    margin: 0;
+    white-space: nowrap;
+    font-size: 14px;
+
+    @media (max-width: 768px) {
+        font-size: 13px;
+    }
+}
+
+.closeButton {
+    position: absolute;
+    right: 16px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 20px;
+    transition: color 0.2s;
+
+    &:hover {
+        color: white;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+} 

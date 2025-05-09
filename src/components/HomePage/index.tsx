@@ -1,7 +1,7 @@
 'use client';
 
 import { ActivityTable } from '@/components/ActivityTable';
-import { DeleteButton } from '@/components/DeleteButton';
+import { Alert } from '@/components/Alert';
 import { Header } from '@/components/Header';
 import { SyncButton } from '@/components/SyncButton';
 import { useActivities } from '@/lib/hooks/useActivities';
@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
 
 export const HomePage = () => {
     const { user, isPending } = useAuthStore();
-    const { fetchActivities, syncActivities, deleteActivities, isLoading, activities } = useActivities();
+    const { fetchActivities, syncActivities, isLoading, activities, alert, clearAlert } = useActivities();
 
     useEffect(() => {
         if (user) {
@@ -22,6 +22,12 @@ export const HomePage = () => {
     return (
         <div className={styles.container}>
             <Header />
+            {alert && (
+                <Alert
+                    message={alert.message}
+                    onClose={clearAlert}
+                />
+            )}
             <main className={styles.main}>
                 <section className={styles.hero}>
                     <h1>Track Your GitHub Activities</h1>
@@ -40,12 +46,6 @@ export const HomePage = () => {
                                 isSyncing={isLoading}
                                 lastSyncTime={activities?.[0]?.createdAt ? new Date(activities[0].createdAt) : undefined}
                             />
-                            {activities.length > 0 && (
-                                <DeleteButton
-                                    onClick={deleteActivities}
-                                    isDeleting={isLoading}
-                                />
-                            )}
                         </div>
                         <ActivityTable activities={activities} />
                     </div>
@@ -53,16 +53,16 @@ export const HomePage = () => {
 
                 <section className={styles.features}>
                     <div className={styles.feature}>
-                        <h2>📊 Activity Analytics</h2>
-                        <p>Get detailed insights into your GitHub activities and contribution patterns.</p>
+                        <h2>📊 Contribution Analytics</h2>
+                        <p>Track your GitHub contributions with detailed statistics and period-based analysis.</p>
                     </div>
                     <div className={styles.feature}>
                         <h2>🔄 Real-time Updates</h2>
-                        <p>Stay updated with your latest GitHub activities in real-time.</p>
+                        <p>Stay updated with your latest GitHub contributions through automatic synchronization.</p>
                     </div>
                     <div className={styles.feature}>
-                        <h2>📈 Progress Tracking</h2>
-                        <p>Track your progress and set goals for your GitHub contributions.</p>
+                        <h2>📈 Contribution History</h2>
+                        <p>View your contribution history and track your progress over time.</p>
                     </div>
                 </section>
 

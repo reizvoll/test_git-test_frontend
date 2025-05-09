@@ -66,12 +66,10 @@ export const githubApi = {
         API.get<ApiResponse<GitHubActivity[]>>('/api/activities'),
     getStats: () => 
         API.get<ApiResponse<ActivityStats>>('/api/users/stats'),
-};
-
-// 사용자 관련 API
-export const userApi = {
-    getProfile: () => 
-        API.get<ApiResponse<UserProfile>>('/api/users/profile'),
+    syncActivities: () =>
+        API.post<ApiResponse<{ message: string; activities: GitHubActivity[] }>>('/api/activities/sync'),
+    setAutoSync: (enabled: boolean) =>
+        API.post<ApiResponse<{ message: string }>>('/api/activities/sync/auto', { enabled }),
 };
 
 // 요청 인터셉터 - 토큰 추가
