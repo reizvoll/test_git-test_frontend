@@ -75,6 +75,21 @@ export const useActivities = () => {
         }
     }, []);
 
+    const deleteActivities = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            await API.delete('/api/activities');
+            setActivities([]); // Clear activities after successful deletion
+        } catch (err) {
+            console.error('Failed to delete activities:', err);
+            setError(err instanceof Error ? err.message : 'Failed to delete activities.');
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     return {
         activities,
         stats,
@@ -83,5 +98,6 @@ export const useActivities = () => {
         fetchActivities,
         fetchStats,
         syncActivities,
+        deleteActivities,
     };
 };

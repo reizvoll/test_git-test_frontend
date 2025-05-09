@@ -1,6 +1,7 @@
 'use client';
 
 import { ActivityTable } from '@/components/ActivityTable';
+import { DeleteButton } from '@/components/DeleteButton';
 import { Header } from '@/components/Header';
 import { SyncButton } from '@/components/SyncButton';
 import { useActivities } from '@/lib/hooks/useActivities';
@@ -10,7 +11,7 @@ import styles from './styles.module.scss';
 
 export const HomePage = () => {
     const { user, isPending } = useAuthStore();
-    const { fetchActivities, syncActivities, isLoading, activities } = useActivities();
+    const { fetchActivities, syncActivities, deleteActivities, isLoading, activities } = useActivities();
 
     useEffect(() => {
         if (user) {
@@ -33,11 +34,19 @@ export const HomePage = () => {
                     <div>Loading...</div>
                 ) : user && (
                     <div className={styles.actions}>
-                        <SyncButton
-                            onClick={syncActivities}
-                            isSyncing={isLoading}
-                            lastSyncTime={activities?.[0]?.createdAt ? new Date(activities[0].createdAt) : undefined}
-                        />
+                        <div className={styles.buttonGroup}>
+                            <SyncButton
+                                onClick={syncActivities}
+                                isSyncing={isLoading}
+                                lastSyncTime={activities?.[0]?.createdAt ? new Date(activities[0].createdAt) : undefined}
+                            />
+                            {activities.length > 0 && (
+                                <DeleteButton
+                                    onClick={deleteActivities}
+                                    isDeleting={isLoading}
+                                />
+                            )}
+                        </div>
                         <ActivityTable activities={activities} />
                     </div>
                 )}
