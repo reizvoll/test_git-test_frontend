@@ -84,12 +84,7 @@ export const HistoryTable = ({
                     contextMenu={true}
                     manualColumnResize={true}
                     filters={true}
-                    dropdownMenu={[
-                        'alignment',
-                        'filter_by_condition',
-                        'filter_by_value',
-                        'filter_action_bar',
-                    ]}
+                    dropdownMenu={false}
                     columnSorting={{
                         indicator: true,
                         sortEmptyCells: true,

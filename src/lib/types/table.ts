@@ -51,10 +51,10 @@ export interface HistoryTableProps {
 export const HISTORY_COL_SETTINGS = {
     headers: ['Type', 'Repository', 'Date', 'Contributions'],
     columns: [
-        { data: 'type', type: 'text' },
-        { data: 'repository', type: 'text' },
-        { data: 'createdAt', type: 'text' },
-        { data: 'contributionCount', type: 'numeric' }
+        { data: 'type', type: 'text', readOnly: true },
+        { data: 'repository', type: 'text', readOnly: true },
+        { data: 'createdAt', type: 'text', readOnly: true },
+        { data: 'contributionCount', type: 'numeric', readOnly: true }
     ],
     schema: {
         type: null,
