@@ -4,10 +4,15 @@ import { AnalyticsChart } from '@/components/AnalyticsChart';
 import { Header } from '@/components/Header';
 import { HistoryTable } from '@/components/HistoryTable';
 import { useAnalyticsStore } from '@/lib/store/analyticsStore';
+import { useEffect } from 'react';
 import styles from './styles.module.scss';
 
 export default function MyPage() {
-  const { analytics, isPending, error } = useAnalyticsStore();
+  const { analytics, isPending, error, fetchAnalytics, period } = useAnalyticsStore();
+
+  useEffect(() => {
+    fetchAnalytics({ period });
+  }, [fetchAnalytics, period]);
 
   return (
     <div className={styles.container}>
