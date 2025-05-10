@@ -25,10 +25,8 @@ export const useAuthStore = create<AuthState>((set) => ({
         set({ isPending: true });
         try {
             const response = await authApi.getSession();
-            console.log('Session response in store:', response); // 스토어에서의 응답 로깅
             
             if (response.data?.success && response.data?.data) {
-                console.log('Setting user data in store:', response.data.data);
                 set({ user: response.data.data, error: null });
             } else if (response.data?.error) {
                 console.log('Session error:', response.data.error);

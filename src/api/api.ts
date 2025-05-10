@@ -25,9 +25,7 @@ export const authApi = {
             return response;
         }),
     getSession: async () => {
-        console.log('Fetching session...'); // 디버깅용 로그
         const response = await API.get<ApiResponse<UserProfile>>('/api/auth/session');
-        console.log('Raw session response:', response); // 원본 응답 로깅
         
         // 응답 데이터 구조 확인 및 변환
         if (response.data) {
@@ -106,7 +104,6 @@ API.interceptors.request.use(
 // 응답 인터셉터 - 에러 처리
 API.interceptors.response.use(
     (response) => {
-        console.log('Response:', response.status, response.config.url);
         return response;
     },
     (error) => {
