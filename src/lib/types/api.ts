@@ -35,4 +35,20 @@ export interface ActivityStats {
     totalPullRequests: number;
     totalIssues: number;
     repositories: string[];
+}
+
+export interface AnalyticsData {
+    timeline: Array<{
+        date: string;
+        count: number;
+    }>;
+    repositoryDistribution: Array<{
+        repository: string;
+        _count: number;
+    }>;
+    timePattern: Array<{
+        createdAt: string;
+        _count: number;
+    }>;
+    availableYears: number[];
 } 

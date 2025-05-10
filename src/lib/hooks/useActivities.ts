@@ -1,26 +1,10 @@
 import { githubApi } from '@/api/api';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityStats, GitHubActivity } from '../types/api';
+import { ActivityStats, AnalyticsData, GitHubActivity } from '../types/api';
 
 interface AlertState {
     message: string;
-}
-
-interface AnalyticsData {
-    timeline: Array<{
-        date: string;
-        count: number;
-    }>;
-    repositoryDistribution: Array<{
-        repository: string;
-        _count: number;
-    }>;
-    timePattern: Array<{
-        createdAt: string;
-        _count: number;
-    }>;
-    availableYears: number[];
 }
 
 export const useActivities = () => {
@@ -80,13 +64,25 @@ export const useActivities = () => {
                 return;
             }
 
-            // contribution만 필터링
+            // 데이터 필터링
+            let filteredActivities = activitiesData;
+            
+            // type 필터링
             if (params?.type === 'Contribution') {
-                const filteredActivities = activitiesData.filter(activity => activity.type === 'Contribution');
-                setActivities(filteredActivities);
-            } else {
-                setActivities(activitiesData);
+                filteredActivities = filteredActivities.filter(activity => 
+                    activity.type === 'Contribution'
+                );
             }
+
+            // year 필터링 (period가 year일 때)
+            if (params?.period === 'year' && params?.year) {
+                filteredActivities = filteredActivities.filter(activity => {
+                    const activityYear = new Date(activity.createdAt).getFullYear();
+                    return activityYear === params.year;
+                });
+            }
+
+            setActivities(filteredActivities);
         } catch (err) {
             console.error('Failed to fetch activities:', err);
             setError(err instanceof Error ? err.message : 'Activity data fetching failed.');
@@ -137,7 +133,6 @@ export const useActivities = () => {
 
         try {
             const response = await githubApi.getAnalytics(params);
-            console.log('Analytics response:', response.data); // 응답 데이터 로깅
             
             // 응답 데이터 구조 확인 및 변환
             if (response.data) {
