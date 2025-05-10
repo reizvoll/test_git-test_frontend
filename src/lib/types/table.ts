@@ -1,3 +1,5 @@
+import type { AnalyticsData } from "./api";
+
 export const formatDate = (date: Date | string) => {
     const d = new Date(date);
     return d.toLocaleString('en-US', {
@@ -10,6 +12,18 @@ export const formatDate = (date: Date | string) => {
         timeZone: 'Asia/Seoul'
     });
 };
+
+// For ActivityTable types
+export interface Activity {
+    type: string;
+    repository: string;
+    createdAt: string;
+    title: string;
+}
+
+export interface ActivityResponse {
+    activities: Activity[];
+} 
 
 export const ACTIVITY_COL_SETTINGS = {
     schema: {
@@ -27,6 +41,13 @@ export const ACTIVITY_COL_SETTINGS = {
     ]
 };
 
+// For HistoryTable types
+export interface HistoryTableProps {
+    analytics: AnalyticsData | null;
+    isPending: boolean;
+    error: string | null;
+}
+
 export const HISTORY_COL_SETTINGS = {
     headers: ['Type', 'Repository', 'Date', 'Contributions'],
     columns: [
@@ -43,13 +64,3 @@ export const HISTORY_COL_SETTINGS = {
     }
 };
 
-export interface Activity {
-    type: string;
-    repository: string;
-    createdAt: string;
-    title: string;
-}
-
-export interface ActivityResponse {
-    activities: Activity[];
-} 
