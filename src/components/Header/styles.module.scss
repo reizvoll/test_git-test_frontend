@@ -23,6 +23,8 @@
 }
 
 .logo {
+    cursor: pointer;
+    
     h1 {
         @extend .heading2;
         font-size: 1.5rem;
@@ -45,6 +47,11 @@
     @extend .flexRow;
     @extend .alignItemsCenter;
     gap: 1rem;
+    cursor: pointer;
+
+    &.active {
+        cursor: default;
+    }
 
     .logoutButton {
         margin-left: 1rem;

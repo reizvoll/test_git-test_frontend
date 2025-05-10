@@ -2,11 +2,14 @@
 
 import { useAuthStore } from '@/lib/store/authStore';
 import Image from 'next/image';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styles from './styles.module.scss';
 
 export const Header = () => {
     const { user, login, logout, checkAuth, isPending } = useAuthStore();
+    const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         const initAuth = async () => {
@@ -18,16 +21,29 @@ export const Header = () => {
     useEffect(() => {
     }, [user]);
 
+    const handleProfileClick = () => {
+        if (pathname !== '/mypage') {
+            router.push('/mypage');
+        }
+    };
+
+    const handleLogoClick = () => {
+        router.push('/');
+    };
+
     return (
         <header className={styles.header}>
-            <div className={styles.logo}>
+            <div className={styles.logo} onClick={handleLogoClick}>
                 <h1>GitHub Activity Tracker</h1>
             </div>
             <div className={styles.auth}>
                 {isPending ? (
                     <div>Loading...</div>
                 ) : user ? (
-                    <div className={styles.profile}>
+                    <div 
+                        className={`${styles.profile} ${pathname === '/mypage' ? styles.active : ''}`}
+                        onClick={handleProfileClick}
+                    >
                         {user.image && (
                             <Image
                                 src={user.image}
@@ -40,7 +56,10 @@ export const Header = () => {
                             />
                         )}
                         <span className={styles.username}>{user.username}</span>
-                        <button onClick={logout} className={styles.logoutButton}>
+                        <button onClick={(e) => {
+                            e.stopPropagation();
+                            logout();
+                        }} className={styles.logoutButton}>
                             Logout
                         </button>
                     </div>
