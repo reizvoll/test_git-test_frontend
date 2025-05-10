@@ -1,9 +1,11 @@
 'use client';
 
-import { useActivities } from '@/lib/hooks/useActivities';
+import { useAnalyticsHandlers } from '@/lib/hooks/useAnalyticsHandlers';
+import { AnalyticsChartProps, formatDate } from '@/lib/types/chart';
 import {
     CategoryScale,
     Chart as ChartJS,
+    Filler,
     Legend,
     LinearScale,
     LineElement,
@@ -11,7 +13,6 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
-import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import styles from './styles.module.scss';
 
@@ -22,39 +23,31 @@ ChartJS.register(
     LineElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    Filler
 );
 
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' });
-};
+export const AnalyticsChart = ({
+    analytics,
+    isPending,
+    error,
+}: Omit<AnalyticsChartProps, 'period' | 'selectedYear' | 'onPeriodChange' | 'onYearChange'>) => {
+    const { period, selectedYear, handlePeriodChange, handleYearChange } = useAnalyticsHandlers();
 
-export const AnalyticsChart = () => {
-    const { analytics, fetchAnalytics, isLoading, error } = useActivities();
-    const [period, setPeriod] = useState<'day' | 'week' | 'month' | 'year' | 'all'>('week');
-    const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-
-    useEffect(() => {
-        const params: { period: typeof period; year?: number } = { period };
-        
-        if (period === 'year') {
-            params.year = selectedYear;
-        }
-        
-        fetchAnalytics(params);
-    }, [period, selectedYear, fetchAnalytics]);
-
-    if (isLoading) return <div className={styles.loading}>Loading...</div>;
+    if (isPending) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
     if (!analytics) return null;
 
+    const sortedTimeline = [...analytics.timeline].sort((a, b) => 
+        new Date(a.date).getTime() - new Date(b.date).getTime()
+    );
+
     const timelineData = {
-        labels: analytics.timeline.map(item => formatDate(item.date)),
+        labels: sortedTimeline.map(item => formatDate(item.date)),
         datasets: [
             {
                 label: 'Contributions',
-                data: analytics.timeline.map(item => item.count),
+                data: sortedTimeline.map(item => item.count),
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1,
                 fill: true,
@@ -87,7 +80,7 @@ export const AnalyticsChart = () => {
     return (
         <div className={styles.container}>
             <div className={styles.selectors}>
-                <select value={period} onChange={(e) => setPeriod(e.target.value as any)}>
+                <select value={period} onChange={handlePeriodChange}>
                     <option value="day">Today</option>
                     <option value="week">Week</option>
                     <option value="month">Month</option>
@@ -97,7 +90,7 @@ export const AnalyticsChart = () => {
                 {period === 'year' && analytics.availableYears && (
                     <select 
                         value={selectedYear} 
-                        onChange={(e) => setSelectedYear(Number(e.target.value))}
+                        onChange={handleYearChange}
                     >
                         {analytics.availableYears.map(year => (
                             <option key={year} value={year}>
