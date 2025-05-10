@@ -62,10 +62,26 @@ export const authApi = {
 
 // GitHub 활동 관련 API
 export const githubApi = {
-    getActivities: () => 
-        API.get<ApiResponse<GitHubActivity[]>>('/api/activities'),
-    getStats: () => 
-        API.get<ApiResponse<ActivityStats>>('/api/users/stats'),
+    getActivities: (params?: { 
+        period?: 'day' | 'week' | 'month' | 'year' | 'all';
+        year?: number;
+    }) => 
+        API.get<ApiResponse<GitHubActivity[]>>('/api/activities', { params }),
+    getActivityById: (id: string) =>
+        API.get<ApiResponse<GitHubActivity>>(`/api/activities/${id}`),
+    getStats: (params?: { period?: 'day' | 'week' | 'month' | 'year' }) => 
+        API.get<ApiResponse<ActivityStats>>('/api/activities/stats', { params }),
+    getAnalytics: (params?: { 
+        period?: 'day' | 'week' | 'month' | 'year' | 'all';
+        year?: number;
+    }) =>
+        API.get<ApiResponse<{
+            timeline: Array<{ date: string; count: number }>;
+            repositoryDistribution: Array<{ repository: string; _count: number }>;
+            timePattern: Array<{ createdAt: string; _count: number }>;
+        }>>('/api/activities/analytics', { params }),
+    getAvailableYears: () =>
+        API.get<ApiResponse<number[]>>('/api/activities/years'),
     syncActivities: () =>
         API.post<ApiResponse<{ message: string; activities: GitHubActivity[] }>>('/api/activities/sync'),
     setAutoSync: (enabled: boolean) =>

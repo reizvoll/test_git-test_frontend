@@ -8,12 +8,17 @@ export interface ApiResponse<T> {
 }
 
 export interface GitHubActivity {
-    id: string;
-    type: 'commit' | 'pull_request' | 'issue';
+    userId: string;
+    type: 'Contribution' | 'Commit' | 'PullRequest';
     repository: string;
     title: string;
     url: string;
+    eventId: string;
     createdAt: Date;
+    contributionCount: number;
+    description?: string | null;
+    state?: 'MERGED' | 'CLOSED';
+    mergedAt?: Date | null;
 }
 
 export interface UserProfile {
