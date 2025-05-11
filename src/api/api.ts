@@ -63,6 +63,8 @@ export const githubApi = {
     getActivities: (params?: { 
         period?: 'day' | 'week' | 'month' | 'year' | 'all';
         year?: number;
+        type?: 'contribution' | 'commit' | 'pull_request';
+        repository?: string;
     }) => 
         API.get<ApiResponse<GitHubActivity[]>>('/api/activities', { params }),
     getActivityById: (id: string) =>
