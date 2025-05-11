@@ -73,13 +73,9 @@ export const useActivityFilters = ({ activities }: UseActivityFiltersProps): Use
         );
     };
 
-    const typeFilteredActivities = activities?.filter(activity => {
-        if (selectedType === 'all') return true;
-        if (selectedType === 'contribution') return activity.type === 'Contribution';
-        if (selectedType === 'commit') return activity.type === 'Commit';
-        if (selectedType === 'pull_request') return activity.type === 'PullRequest';
-        return true;
-    }) || [];
+    const typeFilteredActivities = activities?.filter(activity => 
+        selectedType === 'all' ? true : activity.type === selectedType
+    ) || [];
 
     const repositoryFilteredActivities = selectedRepository === 'all' 
         ? typeFilteredActivities 
