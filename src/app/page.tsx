@@ -5,6 +5,7 @@ import { Alert } from '@/components/Alert';
 import { Header } from '@/components/Header';
 import { SyncButton } from '@/components/SyncButton';
 import { useActivities } from '@/lib/hooks/useActivities';
+import { useActivityFilters } from '@/lib/hooks/useActivityFilters';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useEffect } from 'react';
 import styles from './styles.module.scss';
@@ -12,6 +13,16 @@ import styles from './styles.module.scss';
 const Home = () => {
     const { user, isPending } = useAuthStore();
     const { fetchActivities, syncActivities, isLoading, activities, alert, clearAlert } = useActivities();
+    const {
+        selectedType,
+        selectedPeriod,
+        selectedYear,
+        setSelectedType,
+        setSelectedPeriod,
+        setSelectedYear,
+        filteredActivities,
+        availableYears,
+    } = useActivityFilters({ activities });
 
     useEffect(() => {
         if (user) {
@@ -41,13 +52,47 @@ const Home = () => {
                 ) : user && (
                     <div className={styles.actions}>
                         <div className={styles.buttonGroup}>
+                            <select 
+                                value={selectedType} 
+                                onChange={(e) => setSelectedType(e.target.value)}
+                                className={styles.typeSelector}
+                            >
+                                <option value="all">All Activities</option>
+                                <option value="Contribution">Contributions</option>
+                                <option value="Commit">Commits</option>
+                                <option value="PullRequest">Pull Requests</option>
+                            </select>
+                            <select 
+                                value={selectedPeriod} 
+                                onChange={(e) => setSelectedPeriod(e.target.value)}
+                                className={styles.periodSelector}
+                            >
+                                <option value="all">All</option>
+                                <option value="day">Today</option>
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                                <option value="year">Year</option>
+                            </select>
+                            {selectedPeriod === 'year' && (
+                                <select
+                                    value={selectedYear}
+                                    onChange={(e) => setSelectedYear(e.target.value)}
+                                    className={styles.yearSelector}
+                                >
+                                    {availableYears.map(year => (
+                                        <option key={year} value={year}>
+                                            {year}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                             <SyncButton
                                 onClick={syncActivities}
                                 isSyncing={isLoading}
                                 lastSyncTime={activities?.[0]?.createdAt ? new Date(activities[0].createdAt) : undefined}
                             />
                         </div>
-                        <ActivityTable activities={activities} />
+                        <ActivityTable activities={filteredActivities} />
                     </div>
                 )}
 

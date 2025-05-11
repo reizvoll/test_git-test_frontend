@@ -112,6 +112,27 @@
 
 .buttonGroup {
     display: flex;
-    gap: 12px;
+    gap: 0.5rem;
     justify-content: flex-end;
+    margin-bottom: 1rem;
+
+    .typeSelector,
+    .periodSelector,
+    .yearSelector {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+        cursor: pointer;
+        min-width: 120px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .yearSelector {
+        min-width: 100px;
+    }
 } 
