@@ -49,7 +49,8 @@ export const useActivities = () => {
     const fetchActivities = useCallback(async (params?: { 
         period?: 'day' | 'week' | 'month' | 'year' | 'all';
         year?: number;
-        type?: string;
+        type?: 'contribution' | 'commit' | 'pull_request';
+        repository?: string;
     }) => {
         setIsLoading(true);
         setError(null);
@@ -68,7 +69,7 @@ export const useActivities = () => {
             let filteredActivities = activitiesData;
             
             // type 필터링
-            if (params?.type === 'Contribution') {
+            if (params?.type === 'contribution') {
                 filteredActivities = filteredActivities.filter(activity => 
                     activity.type === 'Contribution'
                 );

@@ -17,11 +17,14 @@ const Home = () => {
         selectedType,
         selectedPeriod,
         selectedYear,
+        selectedRepository,
         setSelectedType,
         setSelectedPeriod,
         setSelectedYear,
+        setSelectedRepository,
         filteredActivities,
         availableYears,
+        availableRepositories,
     } = useActivityFilters({ activities });
 
     useEffect(() => {
@@ -58,9 +61,9 @@ const Home = () => {
                                 className={styles.typeSelector}
                             >
                                 <option value="all">All Activities</option>
-                                <option value="Contribution">Contributions</option>
-                                <option value="Commit">Commits</option>
-                                <option value="PullRequest">Pull Requests</option>
+                                <option value="contribution">Contributions</option>
+                                <option value="commit">Commits</option>
+                                <option value="pull_request">Pull Requests</option>
                             </select>
                             <select 
                                 value={selectedPeriod} 
@@ -86,6 +89,18 @@ const Home = () => {
                                     ))}
                                 </select>
                             )}
+                            <select
+                                value={selectedRepository}
+                                onChange={(e) => setSelectedRepository(e.target.value)}
+                                className={styles.repositorySelector}
+                            >
+                                <option value="all">All Repositories</option>
+                                {availableRepositories.map(repo => (
+                                    <option key={repo} value={repo}>
+                                        {repo}
+                                    </option>
+                                ))}
+                            </select>
                             <SyncButton
                                 onClick={syncActivities}
                                 isSyncing={isLoading}
