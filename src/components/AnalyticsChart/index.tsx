@@ -13,6 +13,7 @@ import {
     Title,
     Tooltip,
 } from 'chart.js';
+import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import styles from './styles.module.scss';
 
@@ -33,6 +34,17 @@ export const AnalyticsChart = ({
     error,
 }: Omit<AnalyticsChartProps, 'period' | 'selectedYear' | 'onPeriodChange' | 'onYearChange'>) => {
     const { period, selectedYear, handlePeriodChange, handleYearChange } = useAnalyticsHandlers();
+
+    // Responsive font size
+    const [fontSize, setFontSize] = useState(14);
+    useEffect(() => {
+        const handleResize = () => {
+            setFontSize(window.innerWidth <= 480 ? 10 : 14);
+        };
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     if (isPending) return <div className={styles.loading}>Loading...</div>;
     if (error) return <div className={styles.error}>{error}</div>;
@@ -58,23 +70,42 @@ export const AnalyticsChart = ({
 
     const chartOptions = {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
             legend: {
                 position: 'top' as const,
+                labels: {
+                    font: {
+                        size: fontSize
+                    }
+                }
             },
             title: {
                 display: true,
                 text: 'GitHub Contribution Analytics',
+                font: {
+                    size: fontSize + 2
+                }
             },
         },
         scales: {
-            y: {
-                beginAtZero: true,
+            x: {
                 ticks: {
-                    stepSize: 1,
-                },
+                    font: {
+                        size: fontSize - 2
+                    },
+                    maxRotation: 45,
+                    minRotation: 0,
+                }
             },
-        },
+            y: {
+                ticks: {
+                    font: {
+                        size: fontSize - 2
+                    }
+                }
+            }
+        }
     };
 
     return (
@@ -103,7 +134,9 @@ export const AnalyticsChart = ({
             <div className={styles.charts}>
                 <div className={styles.chart}>
                     <h3>Contribution Timeline</h3>
-                    <Line data={timelineData} options={chartOptions} />
+                    <div style={{width: '100%', height: 240}}>
+                        <Line data={timelineData} options={chartOptions} />
+                    </div>
                 </div>
             </div>
         </div>
