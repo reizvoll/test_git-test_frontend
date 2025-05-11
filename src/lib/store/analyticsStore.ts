@@ -42,21 +42,33 @@ export const useAnalyticsStore = create<AnalyticsState>((set, get) => ({
     try {
       const response = await githubApi.getAnalytics(params);
       
-      if (response.data) {
-        if ('success' in response.data) {
-          if (response.data.success && response.data.data) {
-            set({ analytics: response.data.data as AnalyticsData });
-            return;
-          }
-        }
+      if (!response.data) {
+        set({ error: 'No data received from server' });
+        return;
+      }
 
-        if ('timeline' in response.data && 'repositoryDistribution' in response.data && 'timePattern' in response.data) {
-          set({ analytics: response.data as AnalyticsData });
+      // Check for error response
+      if ('error' in response.data) {
+        set({ error: response.data.error?.message || 'Unknown error occurred' });
+        return;
+      }
+
+      // Handle success response with data
+      if ('success' in response.data && response.data.success && response.data.data) {
+        const analyticsData = response.data.data;
+        if (isValidAnalyticsData(analyticsData)) {
+          set({ analytics: analyticsData });
           return;
         }
       }
+
+      // Handle direct data response
+      if (isValidAnalyticsData(response.data)) {
+        set({ analytics: response.data });
+        return;
+      }
       
-      set({ error: 'Failed to fetch analytics data' });
+      set({ error: 'Invalid analytics data format received' });
     } catch (err) {
       console.error('Failed to fetch analytics:', err);
       set({ error: err instanceof Error ? err.message : 'Analytics data fetching failed' });
@@ -64,4 +76,18 @@ export const useAnalyticsStore = create<AnalyticsState>((set, get) => ({
       set({ isPending: false });
     }
   },
-})); 
+}));
+
+const isValidAnalyticsData = (data: any): data is AnalyticsData => {
+  return (
+    data &&
+    Array.isArray(data.timeline) &&
+    Array.isArray(data.repositoryDistribution) &&
+    Array.isArray(data.timePattern) &&
+    Array.isArray(data.availableYears) &&
+    data.timeline.every((item: any) => 
+      typeof item.date === 'string' && 
+      typeof item.count === 'number'
+    )
+  );
+}; 
