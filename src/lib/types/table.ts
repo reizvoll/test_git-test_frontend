@@ -1,16 +1,25 @@
 import type { AnalyticsData } from "./api";
 
 export const formatDate = (date: Date | string) => {
-    const d = new Date(date);
-    return d.toLocaleString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true,
-        timeZone: 'Asia/Seoul'
-    });
+    try {
+        const d = new Date(date);
+        if (isNaN(d.getTime())) {
+            console.error('Invalid date:', date);
+            return 'Invalid Date';
+        }
+        return d.toLocaleString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+            timeZone: 'Asia/Seoul'
+        });
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return 'Invalid Date';
+    }
 };
 
 // For ActivityTable types
