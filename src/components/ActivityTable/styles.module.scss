@@ -7,6 +7,30 @@
     margin: 12px 0;
 }
 
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5rem 2rem;
+    text-align: center;
+    border-radius: 8px;
+
+    p {
+        margin: 0;
+        color: #24292e;
+        font-size: 1.3rem;
+        font-weight: 500;
+    }
+
+    .subText {
+        margin-top: 0.5rem;
+        color: #586069;
+        font-size: 0.9rem;
+        font-weight: normal;
+    }
+}
+
 .table {
     :global {
         .htCore {

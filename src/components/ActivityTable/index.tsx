@@ -1,7 +1,7 @@
 'use client';
 
-import { ACTIVITY_COL_SETTINGS, formatDate } from '@/lib/types/activity';
 import { GitHubActivity } from '@/lib/types/api';
+import { ACTIVITY_COL_SETTINGS, formatDate } from '@/lib/types/table';
 import { HotTable } from '@handsontable/react';
 import 'handsontable/dist/handsontable.full.min.css';
 import { registerAllModules } from 'handsontable/registry';
@@ -25,6 +25,7 @@ export const ActivityTable = ({ activities }: ActivityTableProps) => {
         repository: activity.repository,
         createdAt: formatDate(activity.createdAt),
         title: activity.title,
+        url: activity.url,
     })) || [];
 
     const handleBeforeColumnSort = (currentSortConfig: any, destinationSortConfigs: any[]) => {
@@ -48,36 +49,43 @@ export const ActivityTable = ({ activities }: ActivityTableProps) => {
 
     return (
         <div className={styles.tableContainer}>
-            <HotTable
-                data={data}
-                ref={hotRef}
-                dataSchema={ACTIVITY_COL_SETTINGS.schema}
-                colHeaders={ACTIVITY_COL_SETTINGS.headers}
-                columns={ACTIVITY_COL_SETTINGS.columns}
-                rowHeaders={true}
-                contextMenu={true}
-                manualColumnResize={true}
-                filters={true}
-                dropdownMenu={[
-                    'alignment',
-                    'filter_by_condition',
-                    'filter_by_value',
-                    'filter_action_bar',
-                ]}
-                columnSorting={{
-                    indicator: true,
-                    sortEmptyCells: true,
-                    headerAction: true,
-                }}
-                autoWrapRow={true}
-                autoWrapCol={true}
-                outsideClickDeselects={false}
-                width="100%"
-                height="auto"
-                stretchH="all"
-                licenseKey="non-commercial-and-evaluation"
-                beforeColumnSort={handleBeforeColumnSort}
-            />
+            {data.length === 0 ? (
+                <div className={styles.emptyState}>
+                    <p>No activities found for the selected filters.</p>
+                    <p className={styles.subText}>Try adjusting your filters or sync your activities.</p>
+                </div>
+            ) : (
+                <HotTable
+                    data={data}
+                    ref={hotRef}
+                    dataSchema={ACTIVITY_COL_SETTINGS.schema}
+                    colHeaders={ACTIVITY_COL_SETTINGS.headers}
+                    columns={ACTIVITY_COL_SETTINGS.columns}
+                    rowHeaders={true}
+                    contextMenu={true}
+                    manualColumnResize={true}
+                    filters={true}
+                    dropdownMenu={[
+                        'alignment',
+                        'filter_by_condition',
+                        'filter_by_value',
+                        'filter_action_bar',
+                    ]}
+                    columnSorting={{
+                        indicator: true,
+                        sortEmptyCells: true,
+                        headerAction: true,
+                    }}
+                    autoWrapRow={true}
+                    autoWrapCol={true}
+                    outsideClickDeselects={false}
+                    width="100%"
+                    height="auto"
+                    stretchH="all"
+                    licenseKey="non-commercial-and-evaluation"
+                    beforeColumnSort={handleBeforeColumnSort}
+                />
+            )}
         </div>
     );
 }; 
