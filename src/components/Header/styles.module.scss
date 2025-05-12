@@ -41,6 +41,8 @@
 .auth {
     @extend .flexRow;
     @extend .alignItemsCenter;
+    min-height: 2.5rem;
+    min-width: 8rem;
 }
 
 .profile {
