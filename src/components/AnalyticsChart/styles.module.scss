@@ -1,3 +1,5 @@
+@import "../../styles/utils.module.scss";
+
 .container {
     padding: 1rem;
 
@@ -8,23 +10,12 @@
         margin-bottom: 0.8rem;
         
         select {
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-            background-color: white;
-            cursor: pointer;
-
-            &:focus {
-                outline: none;
-            }
+            @extend .formControl;
         }
     }
 
     .charts {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
+        @extend .responsiveGrid;
 
         .chart {
             padding: 1rem;
@@ -36,32 +27,23 @@
                 color: #333;
                 font-size: 1.2rem;
 
-                @media (max-width: 480px) {
-                font-size: 0.8rem;
-                margin-bottom: 0.5rem;
-        }
+                @include mobile {
+                    font-size: 0.8rem;
+                    margin-bottom: 0.5rem;
+                }
             }
         }
     }
 
     .loading {
-        text-align: center;
-        padding: 2rem;
-        color: #666;
-        font-size: 1.1rem;
+        @extend .loading;
     }
 
     .error {
-        text-align: center;
-        padding: 2rem;
-        color: #dc3545;
-        font-size: 1.1rem;
-        background-color: #f8d7da;
-        border-radius: 4px;
-        margin: 1rem 0;
+        @extend .error;
     }
 
-    @media (max-width: 480px) {
+    @include mobile {
         padding: 0.5rem;
 
         .charts {
