@@ -138,7 +138,7 @@ export const AnalyticsChart = ({
             <div className={styles.charts}>
                 <div className={styles.chart}>
                     <h3>Contribution Timeline</h3>
-                    <div style={{width: '100%', height: chartHeight, maxWidth: '100%', overflow: 'hidden'}}>
+                    <div style={{width: '100%', height: 240}}>
                         <Line data={timelineData} options={chartOptions} />
                     </div>
                 </div>

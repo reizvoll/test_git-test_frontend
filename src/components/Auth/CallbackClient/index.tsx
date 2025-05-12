@@ -36,8 +36,12 @@ export default function CallbackClient({ token, error }: { token?: string; error
 
     return (
         <div className={styles.content}>
-            <h1 className={styles.title}>Processing authentication...</h1>
-            <LoadingSpinner size="lg" />
+            <div className={styles.authContainer}>
+                <h1 className={styles.title}>Processing authentication...</h1>
+                <div className={styles.spinnerBox}>
+                    <LoadingSpinner size="lg" />
+                </div>
+            </div>
         </div>
     );
 }
