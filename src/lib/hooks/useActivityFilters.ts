@@ -35,8 +35,37 @@ export const useActivityFilters = ({ activities }: UseActivityFiltersProps): Use
 
     const getAvailableRepositories = () => {
         if (!activities) return [];
-        const repositories = new Set(activities.map(activity => activity.repository));
+        
+        // Filter activities by type first if a specific type is selected
+        const typeFilteredActivities = selectedType === 'all' 
+            ? activities 
+            : activities.filter(activity => activity.type.toLowerCase() === selectedType.toLowerCase());
+        
+        // Then get unique repositories from the filtered activities
+        const repositories = new Set(typeFilteredActivities.map(activity => activity.repository));
         return Array.from(repositories).sort();
+    };
+
+    // When type changes, we may need to reset the repository selection
+    // if the currently selected repository is not available in the new type filter
+    const setSelectedTypeAndUpdateRepo = (type: string) => {
+        setSelectedType(type);
+        
+        // Only need to check if a specific repository is selected
+        if (selectedRepository !== 'all') {
+            // Filter activities by the new type
+            const filteredActivitiesByNewType = type === 'all'
+                ? activities || []
+                : (activities || []).filter(activity => activity.type.toLowerCase() === type.toLowerCase());
+            
+            // Get repositories available for the new type
+            const reposForNewType = new Set(filteredActivitiesByNewType.map(activity => activity.repository));
+            
+            // If current repository is not available in the new type filter, reset to 'all'
+            if (!reposForNewType.has(selectedRepository)) {
+                setSelectedRepository('all');
+            }
+        }
     };
 
     const filterActivitiesByPeriod = (activities: GitHubActivity[], period: string) => {
@@ -74,7 +103,7 @@ export const useActivityFilters = ({ activities }: UseActivityFiltersProps): Use
     };
 
     const typeFilteredActivities = activities?.filter(activity => 
-        selectedType === 'all' ? true : activity.type === selectedType
+        selectedType === 'all' ? true : activity.type.toLowerCase() === selectedType.toLowerCase()
     ) || [];
 
     const repositoryFilteredActivities = selectedRepository === 'all' 
@@ -88,7 +117,7 @@ export const useActivityFilters = ({ activities }: UseActivityFiltersProps): Use
         selectedPeriod,
         selectedYear,
         selectedRepository,
-        setSelectedType,
+        setSelectedType: setSelectedTypeAndUpdateRepo,
         setSelectedPeriod,
         setSelectedYear,
         setSelectedRepository,
