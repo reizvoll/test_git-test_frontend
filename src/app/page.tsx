@@ -7,8 +7,9 @@ import { SyncButton } from '@/components/SyncButton';
 import { useActivities } from '@/lib/hooks/useActivities';
 import { useActivityFilters } from '@/lib/hooks/useActivityFilters';
 import { useAuthStore } from '@/lib/store/authStore';
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import styles from './styles.module.scss';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 const Home = () => {
     const { user, isPending } = useAuthStore();
@@ -33,6 +34,12 @@ const Home = () => {
         }
     }, [user, fetchActivities]);
 
+    // Handler for type change to provide better UX feedback
+    const handleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        setSelectedType(e.target.value);
+        // Repository selector will be automatically updated by the hook
+    };
+
     return (
         <div className={styles.container}>
             <Header />
@@ -51,13 +58,15 @@ const Home = () => {
                 </section>
 
                 {isPending ? (
-                    <div>Loading...</div>
+                    <div className={styles.loadingContainer}>
+                        <LoadingSpinner size="lg" />
+                    </div>
                 ) : user && (
                     <div className={styles.actions}>
                         <div className={styles.buttonGroup}>
                             <select 
                                 value={selectedType} 
-                                onChange={(e) => setSelectedType(e.target.value)}
+                                onChange={handleTypeChange}
                                 className={styles.typeSelector}
                             >
                                 <option value="all">All Activities</option>

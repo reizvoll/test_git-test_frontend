@@ -1,19 +1,13 @@
-@import "/src/styles/utils.module";
+@import "../../styles/utils.module.scss";
 
 .tableContainer {
-    @extend .relative;
-    @extend .card;
+    @extend .tableContainer;
     z-index: 0;
     margin: 12px 0;
 }
 
 .emptyState {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5rem 2rem;
-    text-align: center;
+    @extend .emptyState;
     border-radius: 8px;
 
     p {

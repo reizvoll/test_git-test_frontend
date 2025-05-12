@@ -13,6 +13,9 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: "GitHub Activity Tracker",
   description: "Track and visualize your GitHub activities",
+  icons: {
+    icon: "/images/favicon.png",
+  },
 };
 
 export default function RootLayout({

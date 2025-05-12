@@ -1,0 +1,49 @@
+// Loading states
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Spinner styles
+@mixin spinnerBase($size, $borderWidth) {
+  height: $size;
+  width: $size;
+  border-width: $borderWidth;
+  border-radius: 50%;
+  border: $borderWidth solid #d1d5db;
+  border-top-color: #111827;
+  animation: spin 1s linear infinite;
+}
+
+.spinner {
+  @include spinnerBase(2rem, 4px);
+}
+
+.spinnerSm {
+  @include spinnerBase(1rem, 2px);
+}
+
+.spinnerMd {
+  @include spinnerBase(1.5rem, 2px);
+}
+
+.spinnerLg {
+  @include spinnerBase(2rem, 3px);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} 

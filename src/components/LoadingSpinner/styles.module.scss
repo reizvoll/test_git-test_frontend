@@ -1,0 +1,29 @@
+@import "../../styles/utils.module.scss";
+
+.spinnerContainer {
+    @extend .loadingContainer;
+    height: 2.5rem;
+    width: 8rem;
+}
+
+.spinner {
+    @extend .spinner;
+}
+
+.sm {
+    @extend .spinnerSm;
+}
+
+.md {
+    @extend .spinnerMd;
+}
+
+.lg {
+    @extend .spinnerLg;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+} 
