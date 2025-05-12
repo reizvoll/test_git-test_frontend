@@ -9,6 +9,7 @@ import { useActivityFilters } from '@/lib/hooks/useActivityFilters';
 import { useAuthStore } from '@/lib/store/authStore';
 import { useEffect } from 'react';
 import styles from './styles.module.scss';
+import { LoadingSpinner } from '@/components/LoadingSpinner';
 
 const Home = () => {
     const { user, isPending } = useAuthStore();
@@ -51,7 +52,9 @@ const Home = () => {
                 </section>
 
                 {isPending ? (
-                    <div>Loading...</div>
+                    <div className={styles.loadingContainer}>
+                        <LoadingSpinner size="lg" />
+                    </div>
                 ) : user && (
                     <div className={styles.actions}>
                         <div className={styles.buttonGroup}>

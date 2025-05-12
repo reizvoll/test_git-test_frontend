@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import styles from './styles.module.scss';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 export const Header = () => {
     const { user, login, logout, checkAuth, isPending } = useAuthStore();
@@ -38,7 +39,7 @@ export const Header = () => {
             </div>
             <div className={styles.auth}>
                 {isPending ? (
-                    <div>Loading...</div>
+                    <LoadingSpinner size="sm" />
                 ) : user ? (
                     <div 
                         className={`${styles.profile} ${pathname === '/mypage' ? styles.active : ''}`}

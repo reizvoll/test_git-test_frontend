@@ -1,4 +1,4 @@
-@import "/src/styles/utils.module";
+@import "../../styles/utils.module";
 
 .header {
     @extend .flexRow;
@@ -17,7 +17,7 @@
     max-width: 1200px;
     padding: 0 2rem;
 
-    @media (max-width: 480px) {
+    @include mobile {
         padding: 0 1rem;
     }
 }
@@ -31,7 +31,7 @@
         font-weight: 600;
         color: #1a1a1a;
 
-        @media (max-width: 480px) {
+        @include mobile {
             margin-right: 1rem;
             font-size: 1rem;
         }
@@ -41,6 +41,8 @@
 .auth {
     @extend .flexRow;
     @extend .alignItemsCenter;
+    min-height: 2.5rem;
+    min-width: 8rem;
 }
 
 .profile {
@@ -57,7 +59,7 @@
         margin-left: 1rem;
     }
 
-    @media (max-width: 480px) {
+    @include mobile {
         gap: 0.5rem;
         .logoutButton {
             margin-left: 0;
@@ -75,7 +77,7 @@
 .username {
     @extend .text;
 
-    @media (max-width: 480px) {
+    @include mobile {
         display: none;
     }
 }

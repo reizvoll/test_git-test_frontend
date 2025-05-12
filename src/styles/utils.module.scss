@@ -1,52 +1,65 @@
-.flexRow {
+@import './components/buttons';
+@import './components/spinners';
+@import './components/tables';
+
+// Base flexbox mixin
+@mixin flexbox($direction: row) {
   display: flex;
-  flex-direction: row;
+  flex-direction: $direction;
+}
+
+// Flex layout classes
+.flexRow {
+  @include flexbox(row);
 }
 
 .flexCol {
-  display: flex;
-  flex-direction: column;
+  @include flexbox(column);
 }
 
+// Justify content classes
 .justifyContentStart {
-  display: flex;
+  @include flexbox;
   justify-content: flex-start;
 }
 
 .justifyContentCenter {
-  display: flex;
+  @include flexbox;
   justify-content: center;
 }
 
+.justifyContentEnd {
+  @include flexbox;
+  justify-content: flex-end;
+}
+
 .justifyContentSpaceBetween {
-  display: flex;
+  @include flexbox;
   justify-content: space-between;
 }
 
+// Align items classes
+.alignItemsStart {
+  @include flexbox;
+  align-items: flex-start;
+}
+
+.alignItemsCenter {
+  @include flexbox;
+  align-items: center;
+}
+
+.alignItemsEnd {
+  @include flexbox;
+  align-items: flex-end;
+}
+
+// Positioning
 .relative {
   position: relative;
 }
 
-.justifyContentEnd {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.alignItemsCenter {
-  display: flex;
-  align-items: center;
-}
-
-.alignItemsStart {
-  display: flex;
-  align-items: flex-start !important;
-}
-
-.alignItemsEnd {
-  display: flex;
-  align-items: flex-end;
-}
-
+// Common utility classes
 .cursorPointer {
   cursor: pointer;
 }
@@ -59,12 +72,8 @@
   width: 100%;
 }
 
-.pageContent {
-  background-color: white;
-}
-
 .inlineBlock {
-    display: inline-block;
+  display: inline-block;
 }
 
 // Common container styles
@@ -77,6 +86,10 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+}
+
+.pageContent {
+  background-color: white;
 }
 
 // Common card styles
@@ -118,6 +131,22 @@
   }
 }
 
+.actionButton {
+  @extend .button;
+  background-color: #2ea44f;
+  color: white;
+  border: none;
+  
+  &:hover:not(:disabled) {
+    background-color: #2c974b;
+  }
+  
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
 // Common text styles
 .heading1 {
   font-size: 2rem;
@@ -134,6 +163,21 @@
 .text {
   font-weight: 500;
   color: #333;
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: #586069;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 1.1rem;
+  background-color: #f8d7da;
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
 }
 
 // Common spacing
@@ -159,6 +203,84 @@
   background-color: #f6f8fa;
 }
 
+// Loading states
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.loadingContainer {
+  @include flexbox;
+  align-items: center;
+  justify-content: center;
+}
+
+// Spinner styles
+@mixin spinnerBase($size, $borderWidth) {
+  height: $size;
+  width: $size;
+  border-width: $borderWidth;
+  border-radius: 50%;
+  border: $borderWidth solid #d1d5db;
+  border-top-color: #111827;
+  animation: spin 1s linear infinite;
+}
+
+.spinner {
+  @include spinnerBase(2rem, 4px);
+}
+
+.spinnerSm {
+  @include spinnerBase(1rem, 2px);
+}
+
+.spinnerMd {
+  @include spinnerBase(1.5rem, 2px);
+}
+
+.spinnerLg {
+  @include spinnerBase(2rem, 3px);
+}
+
+// Common form element styles
+.formControl {
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+// Table styles
+.tableContainer {
+  @extend .relative;
+  @extend .card;
+  z-index: 0;
+  margin: 12px 0;
+}
+
+// Media queries
+.responsiveGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+// Empty state patterns
+.emptyState {
+  @include flexbox(column);
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
 // Animation classes
 .animate-spin {
   animation: spin 1s linear infinite;
@@ -170,5 +292,29 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Mobile responsive helpers
+@mixin mobile {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
   }
 }
