@@ -2,6 +2,8 @@
 
 .container {
     padding: 1rem;
+    min-height: auto;
+    background-color: transparent;
 
     .selectors {
         display: flex;
