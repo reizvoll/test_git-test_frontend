@@ -35,11 +35,15 @@ export const AnalyticsChart = ({
 }: Omit<AnalyticsChartProps, 'period' | 'selectedYear' | 'onPeriodChange' | 'onYearChange'>) => {
     const { period, selectedYear, handlePeriodChange, handleYearChange } = useAnalyticsHandlers();
 
-    // Responsive font size
+    // Responsive font size and chart height
     const [fontSize, setFontSize] = useState(14);
+    const [chartHeight, setChartHeight] = useState(240);
+    
     useEffect(() => {
         const handleResize = () => {
-            setFontSize(window.innerWidth <= 480 ? 10 : 14);
+            const isMobile = window.innerWidth <= 480;
+            setFontSize(isMobile ? 10 : 14);
+            setChartHeight(isMobile ? 180 : 240);
         };
         handleResize();
         window.addEventListener('resize', handleResize);
@@ -134,7 +138,7 @@ export const AnalyticsChart = ({
             <div className={styles.charts}>
                 <div className={styles.chart}>
                     <h3>Contribution Timeline</h3>
-                    <div style={{width: '100%', height: 240}}>
+                    <div style={{width: '100%', height: chartHeight}}>
                         <Line data={timelineData} options={chartOptions} />
                     </div>
                 </div>
