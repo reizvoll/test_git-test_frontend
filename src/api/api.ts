@@ -20,10 +20,7 @@ export const authApi = {
         window.location.href = `${BASE_URL}/api/auth/github`;
     },
     signOut: () => 
-        API.post('/api/auth/signout').then(response => {
-            localStorage.removeItem('auth_token');
-            return response;
-        }),
+        API.post('/api/auth/signout'),
     getSession: async () => {
         const response = await API.get<ApiResponse<UserProfile>>('/api/auth/session');
         
@@ -88,21 +85,6 @@ export const githubApi = {
         API.post<ApiResponse<{ message: string }>>('/api/activities/sync/auto', { enabled }),
 };
 
-// 요청 인터셉터 - 토큰 추가
-API.interceptors.request.use(
-    (config) => {
-        const token = localStorage.getItem('auth_token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => {
-        console.error('Request error:', error);
-        return Promise.reject(error);
-    }
-);
-
 // 응답 인터셉터 - 에러 처리
 API.interceptors.response.use(
     (response) => {
@@ -111,7 +93,6 @@ API.interceptors.response.use(
     (error) => {
         console.error('Response error:', error);
         if (error.response?.status === 401) {
-            localStorage.removeItem('auth_token');
             Router.push('/');
         }
         return Promise.reject(error);
