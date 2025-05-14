@@ -9,9 +9,11 @@ export const useAnalyticsHandlers = () => {
         setPeriod(newPeriod);
         const params: { period: typeof newPeriod; year?: number } = { period: newPeriod };
         if (newPeriod === 'year') {
-            params.year = selectedYear;
+            fetchAnalytics({ period: newPeriod });
+        } else {
+            delete params.year;
+            fetchAnalytics(params);
         }
-        fetchAnalytics(params);
     };
 
     const handleYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
