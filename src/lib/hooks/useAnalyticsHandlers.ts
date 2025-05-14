@@ -7,12 +7,10 @@ export const useAnalyticsHandlers = () => {
     const handlePeriodChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newPeriod = e.target.value as 'day' | 'week' | 'month' | 'year' | 'all';
         setPeriod(newPeriod);
-        const params: { period: typeof newPeriod; year?: number } = { period: newPeriod };
         if (newPeriod === 'year') {
-            fetchAnalytics({ period: newPeriod });
+            fetchAnalytics({ period: newPeriod, year: selectedYear });
         } else {
-            delete params.year;
-            fetchAnalytics(params);
+            fetchAnalytics({ period: newPeriod });
         }
     };
 
