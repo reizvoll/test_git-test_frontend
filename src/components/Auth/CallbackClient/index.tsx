@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import styles from './styles.module.scss';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 
-export default function CallbackClient({ token, error }: { token?: string; error?: string }) {
+export default function CallbackClient({ error }: { error?: string }) {
     const router = useRouter();
     const { checkAuth } = useAuthStore();
     const hasRun = useRef(false);
@@ -20,19 +20,13 @@ export default function CallbackClient({ token, error }: { token?: string; error
             return;
         }
 
-        if (!token) {
-            router.push(`/error?message=${encodeURIComponent('No token received')}`);
-            return;
-        }
-
-        localStorage.setItem('auth_token', token);
         checkAuth().then(() => {
             router.push('/');
         }).catch((err) => {
             console.error('CheckAuth error:', err);
             router.push(`/error?message=${encodeURIComponent('Failed to check auth')}`);
         });
-    }, [token, error, router, checkAuth]);
+    }, [error, router, checkAuth]);
 
     return (
         <div className={styles.content}>
