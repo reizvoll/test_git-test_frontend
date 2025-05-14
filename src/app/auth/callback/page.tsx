@@ -8,7 +8,7 @@ export default function CallbackPage({
 }) {
   return(
     <div className={styles.container}>
-      <CallbackClient token={searchParams.token} error={searchParams.error} />
+      <CallbackClient error={searchParams.error} />
     </div>
   )
 }
